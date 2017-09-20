@@ -64,7 +64,6 @@ class ApiController
         }
         $sortField = str_replace(['-'], '', $sort);
 
-
         usort($data, function ($a, $b) use ($sortField) {
             if (!property_exists($a, $sortField)) {
                 throw new \InvalidArgumentException("Property {$sortField} does not exists", 500);
