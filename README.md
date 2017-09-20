@@ -7,6 +7,6 @@ To sort fields just put ``sort`` param on query string
 passing what field you need to sort.
 
 e.g 
-######/?sort=id <- it will sort by id asc
+#### /?sort=id <- it will sort by id asc
 
-######/sort=-id < - it will sort by id desc
+#### /?sort=-id < - it will sort by id desc
