@@ -42,8 +42,6 @@ class ApiController
             'wrangle.json'
         ]));
 
-        throw new \InvalidArgumentException('test');
-
         $data = file_get_contents($file);
         $queryParams = $request->getQueryParams();
         if (!empty($queryParams)) {
@@ -59,9 +57,30 @@ class ApiController
 
     public function sortData(string $data, array $queryParams)
     {
-        if (!isset($queryParams['sort'])) {
-           return null;
+        $data = json_decode($data);
+
+        $sort = $queryParams['sort'];
+        $sortType = 'plus';
+        if (strpos($sort, '-') !== false) {
+            $sortType = 'minus';
         }
+        $sortField = str_replace(['-'], '', $sort);
+
+
+        usort($data, function ($a, $b) use ($sortField) {
+            if (!property_exists($a, $sortField)) {
+                throw new \InvalidArgumentException("Property {$sortField} does not exists", 500);
+            }
+
+            return $a->$sortField == $b->$sortField ? 0 : ($a->$sortField > $b->$sortField) ? 1 : -1;
+        });
+
+        if ($sortType == 'minus') {
+            $data = array_reverse($data);
+        }
+
+        return json_encode($data);
+
     }
 
     public function processPOST(Request $request, Response $response, array $args = [])

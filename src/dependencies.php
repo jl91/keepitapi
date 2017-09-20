@@ -24,10 +24,10 @@ $container['errorHandler'] = function ($container) {
 
         $logger = $container->get('logger');
         $pattern = "Message : %s \n Trace: %s";
-        $errorMessage = sprintf($pattern, $e->getMessage(), $e->getTraceAsString());
+        $errorMessage = sprintf($pattern, $e->getMessage(), json_encode($e->getTrace()));
         $logger->error($errorMessage);
 
-        return $response->withStatus(500)
+        return $response->withStatus($e->getCode())
             ->withHeader('Content-Type', 'application/json')
             ->write(json_encode([
                 'status' => 'NOK',
