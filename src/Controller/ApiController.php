@@ -27,6 +27,9 @@ class ApiController
 
     public function processGET(Request $request, Response $response, array $args = [])
     {
+
+        var_dump($args);
+        exit();
         // Sample log message
         $this->logger->info("Slim-Skeleton '/' route");
 

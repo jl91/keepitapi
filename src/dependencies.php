@@ -13,6 +13,6 @@ $container['logger'] = function ($container) {
 };
 
 $container[\ApiKeep\Controller\ApiController::class] = function ($container) {
-    $logger = $container->getContainer()->get('logger');
+    $logger = $container->get('logger');
     return new \ApiKeep\Controller\ApiController($logger);
 };
