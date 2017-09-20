@@ -27,8 +27,10 @@ $container['errorHandler'] = function ($container) {
         $errorMessage = sprintf($pattern, $e->getMessage(), json_encode($e->getTrace()));
         $logger->error($errorMessage);
 
+        $response = $response->withHeader('Content-Type', 'application/json');
+        $response = $response->withHeader('Access-Control-Allow-Origin', '*');
+
         return $response->withStatus($e->getCode())
-            ->withHeader('Content-Type', 'application/json')
             ->write(json_encode([
                 'status' => 'NOK',
                 'message' => 'Something went wrong ;(, please,  try again later'

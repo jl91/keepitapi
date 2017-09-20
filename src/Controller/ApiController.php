@@ -30,10 +30,6 @@ class ApiController
         // Sample log message
         $this->logger->info("Slim-Skeleton '/' route");
 
-        $headers = new \Slim\Http\Headers([
-            'Content-Type' => 'application/json'
-        ]);
-
         $file = realpath(implode(DIRECTORY_SEPARATOR, [
             __DIR__,
             '..',
@@ -48,7 +44,9 @@ class ApiController
             $data = $this->sortData($data, $queryParams);
         }
 
-        $response->headers = $headers;
+        $response = $response->withHeader('Content-Type', 'application/json');
+        $response = $response->withHeader('Access-Control-Allow-Origin', '*');
+
         $response->withStatus(200);
         $response->write($data);
         return $response;
