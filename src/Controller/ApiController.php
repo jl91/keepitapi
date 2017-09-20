@@ -27,9 +27,6 @@ class ApiController
 
     public function processGET(Request $request, Response $response, array $args = [])
     {
-
-        var_dump($args);
-        exit();
         // Sample log message
         $this->logger->info("Slim-Skeleton '/' route");
 
@@ -45,13 +42,26 @@ class ApiController
             'wrangle.json'
         ]));
 
+        throw new \InvalidArgumentException('test');
+
         $data = file_get_contents($file);
+        $queryParams = $request->getQueryParams();
+        if (!empty($queryParams)) {
+            $data = $this->sortData($data, $queryParams);
+        }
 
         $response->headers = $headers;
         $response->withStatus(200);
         $response->write($data);
         return $response;
 
+    }
+
+    public function sortData(string $data, array $queryParams)
+    {
+        if (!isset($queryParams['sort'])) {
+           return null;
+        }
     }
 
     public function processPOST(Request $request, Response $response, array $args = [])
